@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "amwahdan-state-bucket"
+    bucket         = "bm-devops-state-bucket2"       # change here
     key            = "terraform.tfstate"
     region         = "us-east-1"
     dynamodb_table = "terraform-lock-table"

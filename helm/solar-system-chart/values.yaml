@@ -19,7 +19,7 @@ mongo:
   username: ""
   password: ""
 
-resources: {}
+
 nodeSelector: {}
 tolerations: []
 affinity: []

@@ -1,0 +1,36 @@
+name: ArgoCD Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.8.1
+
+      - name: Lint Helm Chart
+        run: helm lint ./helm/solar-system-chart
+
+      - name: Package Helm Chart
+        run: helm package ./helm/solar-system-chart
+
+      - name: ArgoCD Login
+        run: |
+          argocd login ${{ secrets.ARGOCD_SERVER }} \
+            --username ${{ secrets.ARGOCD_USERNAME }} \
+            --password ${{ secrets.ARGOCD_PASSWORD }} \
+            --insecure
+
+      - name: Sync Application
+        run: |
+          argocd app sync solar-system
+          argocd app wait solar-system
