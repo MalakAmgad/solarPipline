@@ -7,8 +7,8 @@ spec:
   project: default
   source:
     repoURL: 'https://github.com/AbdullahWahdan/GitAction_SolarSystem.git'
-    targetRevision: main
-    path: k8s
+    targetRevision: argo-cd_branch
+    path: helm/solar-system-chart
   destination:
     server: https://kubernetes.default.svc
     namespace: default

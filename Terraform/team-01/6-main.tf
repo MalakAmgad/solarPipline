@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket         = "bm-devops-state-bucket1"
+    bucket         = "bm-devops-state-bucket2"       # change here
     key            = "terraform.tfstate"
-    region         = "eu-north-1"
+    region         = "us-east-1"
     dynamodb_table = "terraform-lock-table"
     encrypt        = true
   }
@@ -14,13 +14,13 @@ module "vpc" {
   project         = "sprints"
   private-subnets = ["10.0.128.0/20", "10.0.144.0/20"]
   public-subnets  = ["10.0.0.0/20", "10.0.16.0/20"]
-  azs             = ["eu-north-1a", "eu-north-1b"]
+  azs             = ["us-east-1a", "us-east-1b"]
 }
 
 module "eks" {
   source          = "../infrastructure-modules/eks"
 
-  cluster_name    = "GPA-cluster"
+  cluster_name    = "GP-cluster"
   cluster_version = "1.33"
   vpc_id         = module.vpc.vpc_id
   subnet_ids     = module.vpc.private_subnet_ids
