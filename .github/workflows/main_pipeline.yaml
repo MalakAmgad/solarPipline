@@ -3,6 +3,12 @@ name: Main Pipeline
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  actions: read
+
 jobs:
   unit_test:
     uses: ./.github/workflows/unit-test.yaml
