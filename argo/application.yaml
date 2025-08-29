@@ -11,7 +11,7 @@ spec:
     path: helm/solar-system-chart
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: solar-system
   syncPolicy:
     automated:
       prune: true

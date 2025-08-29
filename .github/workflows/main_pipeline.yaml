@@ -66,6 +66,18 @@ jobs:
     with:
       pipeline_input: "main pipeline run"
 
+   ArgoCD:
+    uses: ./.github/workflows/argocd-deploy.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
+    with:
+      pipeline_input: "main pipeline run"
+
+  
   deploy:
     needs: terraform
     uses: ./.github/workflows/deploy.yaml
