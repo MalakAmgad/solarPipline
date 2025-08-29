@@ -119,7 +119,7 @@ The repository is organized to separate concerns between the **application code*
 Below is a high-level view of the repo:
 
 GitAction_SolarSystem/
-
+```
 ├── .github/
 │ └── workflows/
 │ └── solar-system.yml # GitHub Actions workflow configuration
@@ -142,7 +142,7 @@ GitAction_SolarSystem/
 ├── package.json # npm dependencies and scripts
 ├── package-lock.json # Lock file for dependencies
 └── README.md # Project documentation
-
+```
 
 ---
 
@@ -253,7 +253,7 @@ Instead of manually applying multiple YAML manifests, Helm packages them into a 
 ---
 
 ### 📦 Helm Chart Structure
-
+```
 helm/
 ├── Chart.yaml # Metadata about the chart (name, version, description)
 ├── values.yaml # Default values (e.g., image tag, replica count, service type)
@@ -261,7 +261,7 @@ helm/
 ├── deployment.yaml
 ├── service.yaml
 └── ingress.yaml
-
+```
 
 ---
 
