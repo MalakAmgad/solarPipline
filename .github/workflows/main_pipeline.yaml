@@ -26,35 +26,71 @@ jobs:
   coverage:
     needs: unit_test
     uses: ./.github/workflows/coverage.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
 
   docker:
     needs: coverage
     uses: ./.github/workflows/docker.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
 
   trivy:
     needs: docker
     uses: ./.github/workflows/trivy.yml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
 
   terraform:
     needs: trivy
     uses: ./.github/workflows/terraform.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
 
   deploy:
     needs: terraform
     uses: ./.github/workflows/deploy.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
 
   Monitoring:
     needs: deploy
     uses: ./.github/workflows/observability.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
