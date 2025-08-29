@@ -69,11 +69,23 @@ jobs:
   deploy:
     needs: terraform
     uses: ./.github/workflows/deploy.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
 
   Monitoring:
     needs: deploy
     uses: ./.github/workflows/observability.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
     with:
       pipeline_input: "main pipeline run"
