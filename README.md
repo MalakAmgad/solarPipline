@@ -118,26 +118,29 @@ Each component plays a critical role in building, deploying, and managing the So
 The repository is organized to separate concerns between the **application code** and the **DevOps workflows**.  
 Below is a high-level view of the repo:
 
-.
-├── .github/workflows/           # GitHub Actions workflows (CI/CD flows)
-├── Dockerfile                   # App Dockerfile (root)
-├── app-controller.js            # Sample app source (root-level files)
-├── app-test.js
-├── app.js
-├── index.html
-├── package.json
-├── docker.yaml                  # Docker build/push workflow (visible in repo)
-├── helm/
-│   └── solar-system-chart/      # Helm chart directory for the application
-│       ├── Chart.yaml
-│       ├── values.yaml
-│       └── templates/
-├── Terraform/                   # Terraform infrastructure (team-01 subdir)
-│   └── team-01/
-├── images/                      # Diagrams and documentation assets (e.g., architecture)
-├── .gitignore
-└── README.md
-
+GitAction_SolarSystem/
+├── .github/
+│ └── workflows/
+│ └── solar-system.yml # GitHub Actions workflow configuration
+├── public/
+│ ├── index.html # Main HTML file
+│ ├── favicon.ico # Website favicon
+│ └── manifest.json # Web app manifest
+├── src/
+│ ├── components/
+│ │ ├── Planet.js # Planet component
+│ │ ├── SolarSystem.js # Solar System component
+│ │ └── Stars.js # Stars background component
+│ ├── styles/
+│ │ └── App.css # Main stylesheet
+│ ├── App.js # Main App component
+│ ├── App.test.js # App component tests
+│ ├── index.js # Application entry point
+│ └── reportWebVitals.js # Performance monitoring
+├── .gitignore # Git ignore rules
+├── package.json # npm dependencies and scripts
+├── package-lock.json # Lock file for dependencies
+└── README.md # Project documentation
 
 
 ---
