@@ -39,7 +39,7 @@ jobs:
     with:
       pipeline_input: "main pipeline run"
 
-  observability:
+  Monitoring:
     needs: deploy
     uses: ./.github/workflows/observability.yaml
     with:
