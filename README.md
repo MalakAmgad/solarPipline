@@ -234,17 +234,6 @@ helm/
 
 ---
 
-### ⚡ Helm Commands Used
-```bash
-# Install the chart
-helm install solar-system ./helm --namespace solar-system
-
-# Upgrade an existing release
-helm upgrade solar-system ./helm --namespace solar-system \
-  --set image.repository=myrepo/solar-system \
-  --set image.tag=latest
-
----
 🌐 Accessing the Application
 
 The Helm chart defines a Service (ClusterIP / NodePort / LoadBalancer).
