@@ -1,5 +1,13 @@
 # Solar System Workflow Project
 
+![CI/CD Pipeline](https://github.com/AbdullahWahdan/GitAction_SolarSystem/actions/workflows/docker.yaml/badge.svg)
+
+![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
+![Helm](https://img.shields.io/badge/Helm-Charts-blue?logo=helm)
+![Terraform](https://img.shields.io/badge/Terraform-Infrastructure-blueviolet?logo=terraform)
+![ArgoCD](https://img.shields.io/badge/GitOps-ArgoCD-brightgreen?logo=argo)
+
+
 ## Overview
 This project demonstrates a fully automated **CI/CD pipeline** integrated with **GitOps principles** for managing Kubernetes workloads.  
 The focus of the repository is not the application itself, but the **DevOps workflow** that builds, tests, deploys, and monitors the application in a cloud-native environment.
@@ -13,7 +21,7 @@ The included **Solar System web application** acts as a sample workload to valid
 - **Containerize** the application with **Docker** and publish images to a container registry.
 - Manage workloads on **Amazon EKS (Elastic Kubernetes Service)** using **Helm charts**.
 - Adopt **GitOps practices** with **ArgoCD**, enabling declarative and version-controlled deployments.
-- Integrate **observability and monitoring** with **Prometheus, Grafana, and OpenTelemetry**.
+- Integrate **observability and monitoring** with **Prometheus and Grafana**.
 - Provide a **reproducible, production-like setup** that demonstrates the complete DevOps lifecycle.
 
 ---
@@ -24,7 +32,6 @@ The included **Solar System web application** acts as a sample workload to valid
 - ✅ Kubernetes deployment with Helm charts.  
 - ✅ GitOps-powered continuous delivery via ArgoCD.  
 - ✅ Real-time monitoring & metrics collection with Prometheus and Grafana.  
-- ✅ Traceability and observability with OpenTelemetry.  
 - ✅ Clear documentation and reproducible steps for learning and demonstration.
 
 ---
@@ -55,7 +62,7 @@ part for the diagram
 The workflow integrates multiple DevOps tools and services into a unified pipeline.  
 The following diagram illustrates the high-level architecture of the system:
 
-![Architecture Diagram](./docs/architecture.png)
+diagram place///
 
 
 1. Developer pushes code changes to GitHub.
@@ -67,7 +74,6 @@ The following diagram illustrates the high-level architecture of the system:
 3. ArgoCD continuously monitors the GitOps repo and syncs manifests to the EKS cluster.
 4. The Solar System app is deployed inside Kubernetes pods.
 5. Prometheus scrapes metrics from the cluster and Grafana visualizes them.
-6. OpenTelemetry collects logs and traces for deeper observability.
 
 ---
 
@@ -85,7 +91,6 @@ Each component plays a critical role in building, deploying, and managing the So
 | **ArgoCD** | GitOps Continuous Delivery | Automates deployment by syncing manifests from GitHub to the Kubernetes cluster. |
 | **Prometheus** | Monitoring | Collects real-time metrics from Kubernetes workloads and infrastructure. |
 | **Grafana** | Visualization | Provides interactive dashboards and alerts based on Prometheus metrics. |
-| **OpenTelemetry** | Observability | Enables distributed tracing and logging for deeper visibility into system performance. |
 
 ---
 
@@ -105,7 +110,6 @@ Each component plays a critical role in building, deploying, and managing the So
 - [ArgoCD](https://argo-cd.readthedocs.io/en/stable/)  
 - [Prometheus](https://prometheus.io/docs/introduction/overview/)  
 - [Grafana](https://grafana.com/docs/)  
-- [OpenTelemetry](https://opentelemetry.io/docs/)  
 
 ---
 
@@ -115,91 +119,126 @@ The repository is organized to separate concerns between the **application code*
 Below is a high-level view of the repo:
 
 .
-├── .github/workflows/ # GitHub Actions pipelines (CI/CD workflows)
-├── app/ # Solar System sample application (frontend/backend)
-│ ├── Dockerfile # Dockerfile for containerizing the app
-│ └── src/ # Application source code
-├── helm/ # Helm charts for Kubernetes deployments
-│ ├── Chart.yaml # Helm chart metadata
-│ ├── values.yaml # Default configuration values
-│ └── templates/ # Kubernetes manifest templates
-├── docs/ # Documentation assets (architecture diagrams, images, etc.)
-├── .gitignore # Ignored files in Git
-└── README.md # Project documentation
+├── .github/workflows/           # GitHub Actions workflows (CI/CD flows)
+├── Dockerfile                   # App Dockerfile (root)
+├── app-controller.js            # Sample app source (root-level files)
+├── app-test.js
+├── app.js
+├── index.html
+├── package.json
+├── docker.yaml                  # Docker build/push workflow (visible in repo)
+├── helm/
+│   └── solar-system-chart/      # Helm chart directory for the application
+│       ├── Chart.yaml
+│       ├── values.yaml
+│       └── templates/
+├── Terraform/                   # Terraform infrastructure (team-01 subdir)
+│   └── team-01/
+├── images/                      # Diagrams and documentation assets (e.g., architecture)
+├── .gitignore
+└── README.md
+
 
 
 ---
 
-## 📖 Folder/Component Details
+## 📖 Folder / Component Details
+
 - **`.github/workflows/`**  
-  Contains YAML files defining GitHub Actions pipelines for building, testing, and deploying the app.
+  GitHub Actions workflow files and reusable workflows for CI/CD. (Workflows live here; some pipeline helpers/workflow files may also be present as top-level workflow YAMLs.)
 
-- **`app/`**  
-  Sample Solar System application code. Used as a practical workload to demonstrate the pipeline.
+- **`docker.yaml` (root)**  
+  A workflow visible in the repository used to build and push Docker images. See the repo root for its YAML. :contentReference[oaicite:10]{index=10}
 
-- **`helm/`**  
-  Helm chart used to package and deploy the application to Kubernetes.
+- **`Dockerfile` (root)**  
+  Builds the Solar System sample application image.
 
-- **`docs/`**  
-  Documentation files like architecture diagrams or setup guides.
+- **Application files (root)**  
+  `app.js`, `app-controller.js`, `app-test.js`, `index.html`, `package.json` — the sample application's code and tests live at repository root (not inside `app/`). :contentReference[oaicite:11]{index=11}
 
-- **`.gitignore`**  
-  Specifies which files and folders to ignore in version control.
+- **`helm/solar-system-chart/`**  
+  Helm chart for deploying the application. Contains `Chart.yaml`, `values.yaml`, and `templates/`. :contentReference[oaicite:12]{index=12}
 
-- **`README.md`**  
-  Main documentation file (this file).
+- **`Terraform/team-01/`**  
+  Terraform code used to provision cloud infrastructure (EKS/VPC/IAM, etc.). :contentReference[oaicite:13]{index=13}
+
+- **`images/`**  
+  Diagram files and other documentation assets (place architecture diagram here as `images/architecture.png`). :contentReference[oaicite:14]{index=14}
 
 ---
 
 ## ⚙️ CI/CD Workflow with GitHub Actions
 
-This project uses **GitHub Actions** to implement Continuous Integration (CI) and Continuous Deployment (CD).  
-Whenever code is pushed or a Pull Request is created, the pipeline is automatically triggered.
+This repository uses GitHub Actions for CI/CD and security scanning. Workflow files are primarily located under `.github/workflows/`. In addition, a `docker.yaml` workflow is present in the repo root and is used for image build/push steps. See the repository tree for the exact, current workflow filenames and contents. :contentReference[oaicite:17]{index=17}
+
 
 ---
 
-### 🏗️ Workflow Stages
+### 🏗️ Workflows Overview
+
+- **`main_pipeline.yaml`** → Orchestrates all jobs (build, test, scan, deploy).
+- **`docker.yaml`** → Builds and pushes Docker images to both Docker Hub and GitHub Container Registry (GHCR).
+- **`coverage.yaml`** → Runs test coverage analysis on the application.
+- **`trivy.yml`** → Scans for vulnerabilities in dependencies and Docker images.
+- **`argocd-deploy.yaml`** → Triggers ArgoCD sync to deploy Helm charts to Kubernetes.
+- **`terraform.yaml`** → Provisions AWS infrastructure (e.g., EKS cluster, VPCs, IAM roles) using Terraform.
+
+---
+
+### 🧩 Workflow Stages (as executed in `main_pipeline.yaml`)
 
 1. **Checkout Code**
-   - Uses the `actions/checkout` action to pull the latest code into the workflow runner.
+   - Uses `actions/checkout` to pull the latest source code.
 
 2. **Build & Test**
-   - Installs dependencies and runs tests (if defined for the app).
-   - Ensures that the application is stable before containerization.
+   - Runs application unit tests and coverage (`coverage.yaml`).
 
 3. **Docker Build & Push**
-   - Builds a Docker image from the application `Dockerfile`.
-   - Tags the image with version and commit hash.
-   - Pushes the image to a container registry (e.g., Docker Hub or AWS ECR).
+   - Builds Docker image from `app/Dockerfile`.
+   - Runs a live container smoke test (`/live` endpoint).
+   - Pushes image to:
+     - **Docker Hub** (credentials from secrets `DOCKER_USERNAME`, `DOCKER_PASSWORD`)
+     - **GitHub Container Registry (GHCR)** (credentials from `GHCR_USERNAME`, `GHCR_TOKEN`)
 
-4. **Helm Chart Packaging**
-   - Packages Kubernetes manifests into a Helm chart.
-   - Ensures deployment files are ready for Kubernetes.
+4. **Security Scanning with Trivy**
+   - Scans both source code and Docker images for vulnerabilities.
+   - Fails the pipeline if critical CVEs are found.
 
-5. **Deployment to Kubernetes**
-   - Uses `kubectl` and/or ArgoCD to deploy the Helm chart into the EKS cluster.
-   - Deployment is fully automated after pipeline success.
+5. **Helm Chart Packaging**
+   - Packages Kubernetes manifests from the `helm/` directory.
+
+6. **ArgoCD Sync**
+   - Deploys updated Helm chart to Amazon EKS via `argocd-deploy.yaml`.
+
+7. **Terraform Infrastructure**
+   - Optionally provisions AWS resources (`Terraform/team-01`) before application deployment.
 
 ---
-------------------
----
-🔑 Key Features of the Pipeline
 
-Automated: Every push/PR triggers validation and deployment.
+### 🔒 Secrets Used
 
-Secure: Uses GitHub Secrets for Docker credentials and Kubernetes authentication.
+- `DOCKER_USERNAME`, `DOCKER_PASSWORD` → Docker Hub credentials  
+- `GHCR_USERNAME`, `GHCR_TOKEN` → GitHub Container Registry credentials  
+- `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` → AWS credentials for Terraform & EKS  
+- `ARGOCD_SERVER`, `ARGOCD_AUTH_TOKEN` → ArgoCD API access for GitOps sync  
+  
 
-Reproducible: Same workflow runs across environments, ensuring consistency.
+## 🔐 Security Scanning (Trivy)
 
-Scalable: Can be extended with jobs for linting, security scans, or integration tests.
+This repository runs container and dependency vulnerability scanning with **Trivy** as part of CI/CD.
 
-🔒 Secrets Used
+- **Where it lives:** `.github/workflows/trivy.yml`
+- **How it runs:** Called from the main pipeline as a reusable workflow (see `.github/workflows/main_pipeline.yaml`, job `security`).
+- **What it scans:**
+  - The **repository filesystem** (dependencies / IaC) for known CVEs.
+  - The **Docker image** built for this commit before publishing.
+- **Outcome:** Scan results are attached as workflow artifacts; if critical issues are detected (as configured in `trivy.yml`), the pipeline fails and downstream jobs are blocked.
 
-DOCKER_USERNAME – Docker Hub or ECR username.
+### View results in GitHub Actions
+1. Go to **Actions → Main Pipeline** for the commit.
+2. Open the **security** job.
+3. Download the attached Trivy report artifacts if present.
 
-DOCKER_PASSWORD – Docker Hub or ECR password/token.
-
-KUBE_CONFIG or AWS_CREDENTIALS – For authenticating with the EKS cluster.
 
 ---
 ## ☸️ Kubernetes & Helm Deployment
@@ -317,64 +356,40 @@ Separation of Concerns → CI builds artifacts; CD (via ArgoCD) applies manifest
 ## 📊 Monitoring & Observability
 
 A critical part of DevOps pipelines is ensuring that applications are **observable** once deployed.  
-This project integrates **Prometheus, Grafana, and OpenTelemetry** to provide full-stack monitoring.
+This project integrates **Prometheus** and **Grafana** to provide monitoring and visualization of the Solar System app and Kubernetes cluster.
 
 ---
 
 ### 📡 Prometheus (Metrics Collection)
 - Scrapes metrics from Kubernetes pods, services, and nodes.  
-- Stores time-series data such as CPU usage, memory, request latency, and error rates.  
-- Uses exporters like **kube-state-metrics** and **node-exporter** to collect cluster health data.  
+- Collects key time-series data such as CPU usage, memory consumption, request latency, and error rates.  
+- Uses exporters like **kube-state-metrics** and **node-exporter** for cluster-level health.  
 
 ---
 
-📈 Grafana (Visualization & Dashboards)
-
-Connects to Prometheus as a data source.
-
-Provides rich, interactive dashboards.
-
-Can set up alerts for abnormal behaviors (e.g., high error rate, high latency).
-
-✅ Example Dashboards:
-
-Application response times.
-
-Pod CPU/memory usage.
-
-EKS cluster health.
-
-Request success vs failure rates.
+### 📈 Grafana (Visualization & Dashboards)
+- Connects to Prometheus as a data source.  
+- Provides interactive dashboards for:
+  - Application response times  
+  - Pod CPU/memory usage  
+  - EKS cluster health  
+  - Request success vs failure rates  
+- Can be configured with **alerts** to detect anomalies (e.g., high error rate, resource saturation).  
 
 ---
-🔎 OpenTelemetry (Tracing & Logs)
 
-Collects distributed traces across services (important for microservices).
+### 🧩 Workflow
+1. The application is deployed into EKS via Helm/ArgoCD.  
+2. Prometheus scrapes metrics from workloads and cluster components.  
+3. Grafana queries Prometheus and visualizes data on dashboards.  
 
-Provides logs and spans to track how requests flow through the system.
+---
 
-Integrates with backends like Jaeger or Grafana Tempo for trace visualization.
-
-
-🧩 Workflow
-
-Application deployed on EKS exposes metrics and traces.
-
-Prometheus scrapes metrics → stored in time-series DB.
-
-Grafana queries Prometheus → shows dashboards and alerts.
-
-OpenTelemetry collects traces/logs → provides request-level visibility.
-
-🔑 Benefits
-
-Real-time monitoring of application and cluster health.
-
-Historical analysis of performance trends.
-
-Proactive alerting on anomalies.
-
-End-to-end visibility across metrics, logs, and traces.
+### 🔑 Benefits
+- **Real-time monitoring** of workloads and cluster health.  
+- **Historical analysis** of performance and reliability trends.  
+- **Proactive alerting** to detect issues early.  
+- **Single-pane visibility** across app and infrastructure metrics.  
 
 ---
 
@@ -384,46 +399,43 @@ Here are some resources and documentation links that can help you understand the
 
 🔹 Core Technologies
 
-Kubernetes Documentation https://kubernetes.io/docs/home/?utm_source=chatgpt.com
+Kubernetes Documentation https://kubernetes.io/docs/home/
  – Official documentation for Kubernetes cluster orchestration.
 
-Amazon EKS Documentation https://docs.aws.amazon.com/eks/?utm_source=chatgpt.com
+Amazon EKS Documentation https://docs.aws.amazon.com/eks/
  – AWS-managed Kubernetes service.
 
-Docker Documentation https://docs.docker.com/?utm_source=chatgpt.com
+Docker Documentation https://docs.docker.com/?
  – Building, running, and managing containerized applications.
 
-Helm Documentation https://helm.sh/docs/?utm_source=chatgpt.com
+Helm Documentation https://helm.sh/docs/
  – Package manager for Kubernetes deployments.
 
-ArgoCD Documentation https://argo-cd.readthedocs.io/en/stable/?utm_source=chatgpt.com
+ArgoCD Documentation https://argo-cd.readthedocs.io/en/stable/
  – GitOps continuous delivery for Kubernetes.
 
 🔹 CI/CD & Automation
 
-GitHub Actions Documentation https://docs.github.com/en/actions?utm_source=chatgpt.com
+GitHub Actions Documentation https://docs.github.com/en/actions
  – Automating workflows directly from GitHub.
 
-CI/CD Best Practices https://martinfowler.com/articles/continuousIntegration.html?utm_source=chatgpt.com
+CI/CD Best Practices https://martinfowler.com/articles/continuousIntegration.html
  – Guide by Martin Fowler on CI/CD principles.
 
 🔹 Observability
 
-Prometheus Documentation https://prometheus.io/docs/introduction/overview/?utm_source=chatgpt.com
+Prometheus Documentation https://prometheus.io/docs/introduction/overview/
  – Monitoring and alerting toolkit.
 
-Grafana Documentation https://grafana.com/docs/?utm_source=chatgpt.com
+Grafana Documentation https://grafana.com/docs/
  – Visualization and analytics platform.
-
-OpenTelemetry Documentation https://opentelemetry.io/docs/?utm_source=chatgpt.com
- – Standard for observability instrumentation.
 
 🔹 GitOps Principles
 
-GitOps Guide https://opengitops.dev/?utm_source=chatgpt.com
+GitOps Guide https://opengitops.dev/
  – Best practices and principles for GitOps.
 
-Weaveworks GitOps https://www.weave.works/technologies/gitops/?utm_source=chatgpt.com
+Weaveworks GitOps https://www.weave.works/technologies/gitops/
  – GitOps pioneer resources.
 
  ---
