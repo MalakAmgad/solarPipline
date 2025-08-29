@@ -119,6 +119,7 @@ The repository is organized to separate concerns between the **application code*
 Below is a high-level view of the repo:
 
 GitAction_SolarSystem/
+.
 ├── .github/
 │ └── workflows/
 │ └── solar-system.yml # GitHub Actions workflow configuration
