@@ -9,7 +9,7 @@ on:
         type: string
 
 env:
-  MONGO_URI: ${{vars.MONGO_URI}}
+  MONGO_URI:  mongodb+srv://${{ vars.MONGO_USERNAME }}:${{ secrets.MONGO_PASSWORD }}@supercluster.d83jj.mongodb.net/superData?retryWrites=true&w=majority
   MONGO_USERNAME: ${{vars.MONGO_USERNAME}}
   MONGO_PASSWORD: ${{secrets.MONGO_PASSWORD}}
 
