@@ -1,4 +1,4 @@
-name: deploy-helm-monitoring
+name: monitoring
 
 on:
   workflow_call:
