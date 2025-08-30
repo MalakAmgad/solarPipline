@@ -1,12 +1,9 @@
 name: ArgoCD Deploy
 
 on:
-  workflow_call:
-    inputs:
-      pipeline_input:
-        description: 'Input passed from the main pipeline'
-        required: true
-        type: string
+  push:
+    branches:
+      - main
 
 jobs:
   deploy:
