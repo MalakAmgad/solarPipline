@@ -52,6 +52,7 @@ jobs:
     with:
       pipeline_input: "main pipeline run"
   ArgoCD:
+    needs: trivy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
