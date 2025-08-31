@@ -122,22 +122,23 @@ GitAction_SolarSystem/
 ```
 ├── .github/
 │ └── workflows/
-│ └── solar-system.yml # GitHub Actions workflow configuration
-├── public/
-│ ├── index.html # Main HTML file
-│ ├── favicon.ico # Website favicon
-│ └── manifest.json # Web app manifest
-├── src/
-│ ├── components/
-│ │ ├── Planet.js # Planet component
-│ │ ├── SolarSystem.js # Solar System component
-│ │ └── Stars.js # Stars background component
-│ ├── styles/
-│ │ └── App.css # Main stylesheet
-│ ├── App.js # Main App component
-│ ├── App.test.js # App component tests
-│ ├── index.js # Application entry point
-│ └── reportWebVitals.js # Performance monitoring
+│ └── main_pipeline.yaml
+│ └── unit-test.yaml
+│ └── coverage.yaml
+│ └── docker.yaml
+│ └── trivy.yaml
+│ └── terraform.yaml
+│ └── deploy.yaml
+│ └── observability.yaml
+│ └── argocd-deploy.yaml
+├── app.js
+├── app-test.js
+├── .gitignore # Git ignore rules
+├── .gitignore # Git ignore rules
+├── .gitignore # Git ignore rules
+├── .gitignore # Git ignore rules
+├── Dockerfile
+├── index.html
 ├── .gitignore # Git ignore rules
 ├── package.json # npm dependencies and scripts
 ├── package-lock.json # Lock file for dependencies
