@@ -55,4 +55,12 @@ jobs:
           argocd app get solar-system || echo "App not found, creating..."
           argocd app sync solar-system
           argocd app wait solar-system
+      
+      - name: Print ArgoCD App URL
+        run: |
+          ARGOCD_SERVER="https://<ARGOCD_SERVER_URL>"
+          APP_NAME="solar-system"
+          echo "ArgoCD Application URL:"
+          echo "$ARGOCD_SERVER/applications/$APP_NAME"
+
 
