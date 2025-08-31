@@ -58,6 +58,13 @@ jobs:
       
       - name: Print ArgoCD App URL
         run: |
-          kubectl get svc -n argocd
+          ARGOCD_SERVER=$(kubectl get svc argocd-server -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          if [ -z "$ARGOCD_SERVER" ]; then
+            ARGOCD_SERVER=$(kubectl get svc argocd-server -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          fi
+          APP_NAME="solar-system"
+          echo "ArgoCD Application URL:"
+          echo "https://$ARGOCD_SERVER/applications/$APP_NAME"
+
 
 
