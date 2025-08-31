@@ -131,15 +131,35 @@ GitAction_SolarSystem/
 │ └── deploy.yaml
 │ └── observability.yaml
 │ └── argocd-deploy.yaml
+├── Terraform/
+│ └── infastructure-modules
+│ └── team-01
+├── argo/
+│ └── application.yaml
+├── helm/
+│ └── solar-system-chart/
+│ └── .helmignore
+│ └── Chart.yaml
+│ └── values.yaml
+│ └── templates/
+│ └────  _helpers.tpl
+│ └────  NOTES.txt
+│ └────  deployment.yaml
+│ └────  hpa.yaml
+│ └────  ingress.yaml
+│ └────  service.yaml
+│ └────  serviceaccount.yaml
+│ └────  tests \
+│ └───────  test-connection.yaml
+├── images/
+│ └── pictures
 ├── app.js
 ├── app-test.js
-├── .gitignore # Git ignore rules
-├── .gitignore # Git ignore rules
-├── .gitignore # Git ignore rules
+├── app-controller.js
 ├── .gitignore # Git ignore rules
 ├── Dockerfile
 ├── index.html
-├── .gitignore # Git ignore rules
+├── .dockerignore
 ├── package.json # npm dependencies and scripts
 ├── package-lock.json # Lock file for dependencies
 └── README.md # Project documentation
