@@ -209,6 +209,7 @@ This repository uses GitHub Actions for CI/CD and security scanning. Workflow fi
 - **`trivy.yml`** → Scans for vulnerabilities in dependencies and Docker images.
 - **`argocd-deploy.yaml`** → Triggers ArgoCD sync to deploy Helm charts to Kubernetes.
 - **`terraform.yaml`** → Provisions AWS infrastructure (e.g., EKS cluster, VPCs, IAM roles) using Terraform.
+- **`observability.yaml`** → for monitoring deploy in EKS.
 
 ---
 
