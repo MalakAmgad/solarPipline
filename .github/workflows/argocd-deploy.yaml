@@ -30,8 +30,8 @@ jobs:
 
       - name: ArgoCD Login
         run: |
-          argocd login ${{ secrets.ARGOCD_SERVER }} \
-            --username ${{ secrets.ARGOCD_USERNAME }} \
+          argocd login ${{ vars.ARGOCD_SERVER }} \
+            --username ${{ vars.ARGOCD_USERNAME }} \
             --password ${{ secrets.ARGOCD_PASSWORD }} \
             --insecure
           argocd context
