@@ -62,7 +62,7 @@ part for the diagram
 The workflow integrates multiple DevOps tools and services into a unified pipeline.  
 The following diagram illustrates the high-level architecture of the system:
 
-diagram place///
+![Architecture Diagram](./images/Diagram.png)
 
 
 1. Developer pushes code changes to GitHub.
