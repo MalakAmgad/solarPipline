@@ -1,13 +1,15 @@
 # Solar System Workflow Project
 
 ![CI/CD Pipeline](https://github.com/AbdullahWahdan/GitAction_SolarSystem/actions/workflows/docker.yaml/badge.svg)
+
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
 ![Helm](https://img.shields.io/badge/Helm-Charts-blue?logo=helm)
 ![Terraform](https://img.shields.io/badge/Terraform-Infrastructure-blueviolet?logo=terraform)
+![ArgoCD](https://img.shields.io/badge/GitOps-ArgoCD-brightgreen?logo=argo)
 
 
 ## Overview
-This project demonstrates a fully automated **CI/CD pipeline** 
+This project demonstrates a fully automated **CI/CD pipeline** integrated with **GitOps principles** for managing Kubernetes workloads.  
 The focus of the repository is not the application itself, but the **DevOps workflow** that builds, tests, deploys, and monitors the application in a cloud-native environment.
 
 The included **Solar System web application** acts as a sample workload to validate and showcase the pipeline. Through this project, we simulate how real-world DevOps engineers set up infrastructure and workflows for production-ready applications.
@@ -18,6 +20,7 @@ The included **Solar System web application** acts as a sample workload to valid
 - Automate application **build, test, and deployment** using **GitHub Actions**.
 - **Containerize** the application with **Docker** and publish images to a container registry.
 - Manage workloads on **Amazon EKS (Elastic Kubernetes Service)** using **Helm charts**.
+- Adopt **GitOps practices** with **ArgoCD**, enabling declarative and version-controlled deployments.
 - Integrate **observability and monitoring** with **Prometheus and Grafana**.
 - Provide a **reproducible, production-like setup** that demonstrates the complete DevOps lifecycle.
 
@@ -26,7 +29,8 @@ The included **Solar System web application** acts as a sample workload to valid
 ## ✨ Key Features
 - ✅ End-to-end CI/CD pipeline using GitHub Actions.  
 - ✅ Application containerization and registry integration.  
-- ✅ Kubernetes deployment with Helm charts.    
+- ✅ Kubernetes deployment with Helm charts.  
+- ✅ GitOps-powered continuous delivery via ArgoCD.  
 - ✅ Real-time monitoring & metrics collection with Prometheus and Grafana.  
 - ✅ Clear documentation and reproducible steps for learning and demonstration.
 
@@ -35,8 +39,9 @@ The included **Solar System web application** acts as a sample workload to valid
 ## 📂 What This Project Covers
 1. **Continuous Integration (CI)**: Linting, testing, and building Docker images.  
 2. **Continuous Deployment (CD)**: Automated deployment to Kubernetes through GitHub Actions.  
-3. **Infrastructure as Code (IaC)**: Using Helm charts to define Kubernetes manifests.    
-4. **Monitoring & Observability**: Collecting metrics and logs for visibility.  
+3. **Infrastructure as Code (IaC)**: Using Helm charts to define Kubernetes manifests.  
+4. **GitOps**: Syncing manifests with ArgoCD for declarative deployments.  
+5. **Monitoring & Observability**: Collecting metrics and logs for visibility.  
 
 ---
 
@@ -45,6 +50,7 @@ Modern software teams require **reliable, automated pipelines** that reduce huma
 By following the documentation, you will learn how to:
 - Set up pipelines from scratch.
 - Deploy applications in Kubernetes clusters.
+- Apply GitOps workflows.
 - Monitor and observe cloud-native systems.
 
 ---
@@ -65,8 +71,9 @@ diagram place///
    - Containerize the app with Docker.
    - Push the image to the registry.
    - Package Helm charts for deployment.
-3. The Solar System app is deployed inside Kubernetes pods.
-4. Prometheus scrapes metrics from the cluster and Grafana visualizes them.
+3. ArgoCD continuously monitors the GitOps repo and syncs manifests to the EKS cluster.
+4. The Solar System app is deployed inside Kubernetes pods.
+5. Prometheus scrapes metrics from the cluster and Grafana visualizes them.
 
 ---
 
@@ -81,6 +88,7 @@ Each component plays a critical role in building, deploying, and managing the So
 | **Docker** | Containerization | Packages the application into lightweight, portable containers for consistency across environments. |
 | **Amazon EKS (Elastic Kubernetes Service)** | Kubernetes Cluster | Manages containerized workloads in a scalable and highly available cloud environment. |
 | **Helm** | Kubernetes Package Manager | Simplifies deployment and management of Kubernetes manifests using reusable charts. |
+| **ArgoCD** | GitOps Continuous Delivery | Automates deployment by syncing manifests from GitHub to the Kubernetes cluster. |
 | **Prometheus** | Monitoring | Collects real-time metrics from Kubernetes workloads and infrastructure. |
 | **Grafana** | Visualization | Provides interactive dashboards and alerts based on Prometheus metrics. |
 
@@ -90,6 +98,7 @@ Each component plays a critical role in building, deploying, and managing the So
 - **Kubernetes CLI (kubectl)** → For direct interaction with the cluster.  
 - **AWS CLI** → For managing AWS resources.  
 - **Docker Hub / Amazon ECR** → For storing container images.  
+- **draw.io / Excalidraw** → For visual diagrams included in documentation.  
 
 ---
 
@@ -98,6 +107,7 @@ Each component plays a critical role in building, deploying, and managing the So
 - [Docker Documentation](https://docs.docker.com/)  
 - [Amazon EKS](https://aws.amazon.com/eks/)  
 - [Helm](https://helm.sh/docs/)  
+- [ArgoCD](https://argo-cd.readthedocs.io/en/stable/)  
 - [Prometheus](https://prometheus.io/docs/introduction/overview/)  
 - [Grafana](https://grafana.com/docs/)  
 
@@ -174,6 +184,7 @@ This repository uses GitHub Actions for CI/CD and security scanning. Workflow fi
 - **`docker.yaml`** → Builds and pushes Docker images to both Docker Hub and GitHub Container Registry (GHCR).
 - **`coverage.yaml`** → Runs test coverage analysis on the application.
 - **`trivy.yml`** → Scans for vulnerabilities in dependencies and Docker images.
+- **`argocd-deploy.yaml`** → Triggers ArgoCD sync to deploy Helm charts to Kubernetes.
 - **`terraform.yaml`** → Provisions AWS infrastructure (e.g., EKS cluster, VPCs, IAM roles) using Terraform.
 
 ---
@@ -200,7 +211,10 @@ This repository uses GitHub Actions for CI/CD and security scanning. Workflow fi
 5. **Helm Chart Packaging**
    - Packages Kubernetes manifests from the `helm/` directory.
 
-6. **Terraform Infrastructure**
+6. **ArgoCD Sync**
+   - Deploys updated Helm chart to Amazon EKS via `argocd-deploy.yaml`.
+
+7. **Terraform Infrastructure**
    - Optionally provisions AWS resources (`Terraform/team-01`) before application deployment.
 
 ---
@@ -210,6 +224,7 @@ This repository uses GitHub Actions for CI/CD and security scanning. Workflow fi
 - `DOCKER_USERNAME`, `DOCKER_PASSWORD` → Docker Hub credentials  
 - `GHCR_USERNAME`, `GHCR_TOKEN` → GitHub Container Registry credentials  
 - `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION` → AWS credentials for Terraform & EKS  
+- `ARGOCD_SERVER`, `ARGOCD_AUTH_TOKEN` → ArgoCD API access for GitOps sync  
   
 
 ## 🔐 Security Scanning (Trivy)
@@ -282,6 +297,65 @@ Simplicity → One command (helm upgrade) updates the entire deployment.
 
 ---
 
+## 🔄 GitOps with ArgoCD
+
+This project follows **GitOps principles** for managing Kubernetes deployments.  
+Instead of applying changes directly to the cluster, all configurations are stored in **Git**, and **ArgoCD** ensures the cluster state matches the repository state.
+
+---
+
+### 🧭 What is GitOps?
+- **Declarative**: Infrastructure and application definitions are written as code (YAML/Helm).  
+- **Version-Controlled**: All manifests are stored in Git, providing full history and audit trails.  
+- **Automated**: A GitOps operator (ArgoCD) continuously syncs the cluster with the Git repository.  
+- **Reliable**: Any drift (difference between repo and cluster) is detected and can be auto-corrected.
+
+---
+
+### 🛠️ ArgoCD in This Project
+1. Watches the **GitHub repository** for changes to manifests/Helm charts.  
+2. Syncs changes automatically to the **Amazon EKS cluster**.  
+3. Provides a **web UI and CLI** for monitoring, rollbacks, and manual syncs.  
+
+---
+
+🚀 GitOps Workflow
+
+Developer commits code → triggers GitHub Actions.
+
+CI builds & pushes Docker image → updates Helm values in Git.
+
+ArgoCD detects changes in Git → applies updated Helm chart to EKS.
+
+Application is redeployed automatically → cluster state always matches Git.
+
+---
+
+🎨 ArgoCD UI
+
+ArgoCD provides a visual dashboard where you can:
+
+View application health and sync status.
+
+Compare live vs desired state.
+
+Roll back to previous versions.
+
+Trigger manual syncs if needed.
+
+---
+
+🔑 Benefits of GitOps in This Project
+
+Full Traceability → Every deployment is linked to a Git commit.
+
+Consistency → Same manifests are applied across environments.
+
+Self-Healing → If cluster drifts from desired state, ArgoCD restores it.
+
+Separation of Concerns → CI builds artifacts; CD (via ArgoCD) applies manifests.
+
+---
 
 ## 📊 Monitoring & Observability
 
@@ -309,7 +383,7 @@ This project integrates **Prometheus** and **Grafana** to provide monitoring and
 ---
 
 ### 🧩 Workflow
-1. The application is deployed into EKS via Helm/ArgoCD.  <-----------
+1. The application is deployed into EKS via Helm/ArgoCD.  
 2. Prometheus scrapes metrics from workloads and cluster components.  
 3. Grafana queries Prometheus and visualizes data on dashboards.  
 
@@ -341,6 +415,9 @@ Docker Documentation https://docs.docker.com/?
 Helm Documentation https://helm.sh/docs/
  – Package manager for Kubernetes deployments.
 
+ArgoCD Documentation https://argo-cd.readthedocs.io/en/stable/
+ – GitOps continuous delivery for Kubernetes.
+
 🔹 CI/CD & Automation
 
 GitHub Actions Documentation https://docs.github.com/en/actions
@@ -356,5 +433,13 @@ Prometheus Documentation https://prometheus.io/docs/introduction/overview/
 
 Grafana Documentation https://grafana.com/docs/
  – Visualization and analytics platform.
+
+🔹 GitOps Principles
+
+GitOps Guide https://opengitops.dev/
+ – Best practices and principles for GitOps.
+
+Weaveworks GitOps https://www.weave.works/technologies/gitops/
+ – GitOps pioneer resources.
 
  ---
