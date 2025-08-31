@@ -34,8 +34,15 @@ jobs:
             --username ${{ secrets.ARGOCD_USERNAME }} \
             --password ${{ secrets.ARGOCD_PASSWORD }} \
             --insecure
+          argocd context
+      
+      - name: Apply ArgoCD Application
+        run: |
+            kubectl apply -f argo/application.yaml
 
       - name: Sync Application
         run: |
+          argocd app get solar-system || echo "App not found, creating..."
           argocd app sync solar-system
           argocd app wait solar-system
+
