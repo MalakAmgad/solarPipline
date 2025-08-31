@@ -58,6 +58,6 @@ jobs:
       
       - name: Print ArgoCD App URL
         run: |
-          kubectl get svc -n argocd-server
+          kubectl get svc -n argocd
 
 
