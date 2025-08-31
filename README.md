@@ -142,16 +142,18 @@ GitAction_SolarSystem/
 │ └── Chart.yaml
 │ └── values.yaml
 │ └── templates/
-│ └────  _helpers.tpl
-│ └────  NOTES.txt
-│ └────  deployment.yaml
-│ └────  hpa.yaml
-│ └────  ingress.yaml
-│ └────  service.yaml
-│ └────  serviceaccount.yaml
-│ └────  tests \
-│ └───────  test-connection.yaml
+│    └──  _helpers.tpl
+│    └──  NOTES.txt
+│    └──  deployment.yaml
+│    └──  hpa.yaml
+│    └──  ingress.yaml
+│    └──  service.yaml
+│    └── serviceaccount.yaml
+│    └──  tests \
+│       └───  test-connection.yaml
 ├── images/
+│ └── pictures
+├── readmeimage/
 │ └── pictures
 ├── app.js
 ├── app-test.js
@@ -263,6 +265,7 @@ This repository runs container and dependency vulnerability scanning with **Triv
 1. Go to **Actions → Main Pipeline** for the commit.
 2. Open the **security** job.
 3. Download the attached Trivy report artifacts if present.
+   ![report Vulnarabilities ](https://github.com/AbdullahWahdan/GitAction_SolarSystem/blob/main/readmeimage/vulnarability%20report.jpg)
 
 
 ---
@@ -322,6 +325,7 @@ Simplicity → One command (helm upgrade) updates the entire deployment.
 
 This project follows **GitOps principles** for managing Kubernetes deployments.  
 Instead of applying changes directly to the cluster, all configurations are stored in **Git**, and **ArgoCD** ensures the cluster state matches the repository state.
+![ArgoCD](https://github.com/AbdullahWahdan/GitAction_SolarSystem/blob/main/readmeimage/argocdwork.jpg)
 
 ---
 
@@ -399,7 +403,8 @@ This project integrates **Prometheus** and **Grafana** to provide monitoring and
   - Pod CPU/memory usage  
   - EKS cluster health  
   - Request success vs failure rates  
-- Can be configured with **alerts** to detect anomalies (e.g., high error rate, resource saturation).  
+- Can be configured with **alerts** to detect anomalies (e.g., high error rate, resource saturation).
+- ![argoCD](https://github.com/AbdullahWahdan/GitAction_SolarSystem/blob/main/readmeimage/grafana.jpg)
 
 ---
 
