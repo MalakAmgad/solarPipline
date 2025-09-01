@@ -1,0 +1,41 @@
+replicaCount: 3
+
+image:
+  repository: 20150748/solar-system
+  tag: latest
+  pullPolicy: IfNotPresent
+
+serviceAccount:
+  create: true
+  name: solar-system-sa
+
+service:
+  type: LoadBalancer
+  port: 80
+  targetPort: 3000
+
+mongo:
+  uri: ""
+  username: ""
+  password: ""
+
+
+nodeSelector: {}
+tolerations: []
+affinity: []
+
+ingress:
+  enabled: false
+  annotations: {}
+  hosts:
+  - host: solar-system.example.com
+    paths:
+    - path: /
+      pathType: ImplementationSpecific
+  tls: []
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 80

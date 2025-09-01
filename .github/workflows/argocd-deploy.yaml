@@ -1,0 +1,117 @@
+name: ArgoCD Deploy
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  actions: read
+jobs:
+  unit_test:
+    uses: ./.github/workflows/unit-test.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
+    with:
+      pipeline_input: "main pipeline run"
+
+  coverage:
+    needs: unit_test
+    uses: ./.github/workflows/coverage.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
+    with:
+      pipeline_input: "main pipeline run"
+
+  docker:
+    needs: coverage
+    uses: ./.github/workflows/docker.yaml
+    secrets: inherit
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      actions: read
+    with:
+      pipeline_input: "main pipeline run"
+
+  trivy:
+    needs: docker
+    uses: ./.github/workflows/trivy.yml
+    secrets: inherit
+    with:
+      pipeline_input: "main pipeline run"
+  ArgoCD:
+    needs: trivy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: v3.8.1
+
+      - name: Lint Helm Chart
+        run: helm lint ./helm/solar-system-chart
+
+      - name: Package Helm Chart
+        run: helm package ./helm/solar-system-chart
+
+      - name: Install ArgoCD CLI
+        run: |
+          curl -sSL -o argocd https://github.com/argoproj/argo-cd/releases/latest/download/argocd-linux-amd64
+          chmod +x argocd
+          sudo mv argocd /usr/local/bin/
+
+      - name: ArgoCD Login
+        run: |
+          argocd login ${{ vars.ARGOCD_SERVER }} \
+            --username ${{ vars.ARGOCD_USERNAME }} \
+            --password ${{ secrets.ARGOCD_PASSWORD }} \
+            --insecure
+          argocd context
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1   
+
+      - name: Update kubeconfig
+        run: aws eks update-kubeconfig --name GP-cluster --region us-east-1
+      
+      - name: Apply ArgoCD Application
+        run: |
+            kubectl apply -f argo/application.yaml
+
+      - name: Sync Application
+        run: |
+          argocd app get solar-system || echo "App not found, creating..."
+          argocd app sync solar-system
+          argocd app wait solar-system
+      
+      - name: Print ArgoCD App URL
+        run: |
+          ARGOCD_SERVER=$(kubectl get svc argocd-server -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+          if [ -z "$ARGOCD_SERVER" ]; then
+            ARGOCD_SERVER=$(kubectl get svc argocd-server -n argocd -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+          fi
+          APP_NAME="solar-system"
+          echo "ArgoCD Application URL:"
+          echo "https://$ARGOCD_SERVER/applications/$APP_NAME"
+
+
+

@@ -1,0 +1,47 @@
+name: unit-test
+
+on:
+  workflow_call:
+    inputs:
+      pipeline_input:
+        description: 'Input value passed from the main pipeline'
+        required: true
+        type: string
+
+env:
+  MONGO_URI: mongodb+srv://${{ vars.MONGO_USERNAME }}:${{ secrets.MONGO_PASSWORD }}@supercluster.d83jj.mongodb.net/superData?retryWrites=true&w=majority
+
+
+jobs:
+  unit_testing:
+    name: unit_testing
+    strategy:
+      matrix:
+        nodejs-version: [18, 19, 20]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        exclude:
+        - nodejs-version: 18
+          os: macos-latest
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v5
+
+    - name: Set up Node.js - ${{ matrix.nodejs-version }}
+      uses: actions/setup-node@v4.4.0
+      with:
+        node-version: ${{ matrix.nodejs-version }}
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Run Tests
+      id: nodeNodeJs-unit-testing-step
+      run: npm test
+
+    - name: Archive test results
+      if: steps.nodeNodeJs-unit-testing-step.outcome == 'failure' || steps.nodeNodeJs-unit-testing-step.outcome == 'success'
+      uses: actions/upload-artifact@v4.6.2
+      with:
+        name: sp-test-results-${{matrix.os}}-${{matrix.nodejs-version}}
+        path: test-results.xml

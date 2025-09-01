@@ -1,0 +1,70 @@
+name: monitoring
+
+on:
+  workflow_call:
+    inputs:
+      pipeline_input:
+        description: 'Input passed from the main pipeline'
+        required: true
+        type: string
+
+jobs:
+  deploy-monitoring:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v5
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4.3.1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Update kubeconfig
+        run: aws eks --region us-east-1 update-kubeconfig --name GP-cluster
+
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+
+      - name: Create MongoDB Secret
+        run: |
+          kubectl create namespace solar-system --dry-run=client -o yaml | kubectl apply -f -
+          kubectl create secret generic mongo-credentials \
+            --namespace solar-system \
+            --from-literal=MONGO_URI=${{ vars.MONGO_URI }} \
+            --from-literal=MONGO_USERNAME=${{ vars.MONGO_USERNAME }} \
+            --from-literal=MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy Solar System via Helm
+        run: |
+          helm upgrade --install solar-system ./helm/solar-system-chart \
+            --namespace solar-system --create-namespace
+
+      - name: Add Prometheus Helm Repo
+        run: |
+          helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+          helm repo update
+
+      - name: Install kube-prometheus-stack (Prometheus + Grafana + Dashboards)
+        run: |
+          helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
+            --namespace solar-system --create-namespace \
+            --set grafana.adminUser=admin \
+            --set grafana.adminPassword=${{ secrets.GRAFANA_PASSWORD }} \
+            --set grafana.service.type=LoadBalancer
+
+      - name: List all services in solar-system
+        run: |
+          echo "All services in solar-system namespace:"
+          kubectl get svc -n solar-system
+
+      - name: Output External IPs
+        run: |
+          echo "Fetching External IPs..."
+          for svc in $(kubectl get svc -n solar-system -o jsonpath='{.items[*].metadata.name}'); do
+            ip=$(kubectl get svc $svc -n solar-system -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+            echo "$svc External IP: $ip"
+          done
