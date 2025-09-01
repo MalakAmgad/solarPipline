@@ -1,5 +1,5 @@
 # Solar System Workflow Project
-
+![CI/CD Pipeline](https://github.com/AbdullahWahdan/GitAction_SolarSystem/blob/main/readmeimage/Untitled%20design%20(1).gif)
 ![CI/CD Pipeline](https://github.com/AbdullahWahdan/GitAction_SolarSystem/actions/workflows/docker.yaml/badge.svg)
 
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue?logo=docker)
